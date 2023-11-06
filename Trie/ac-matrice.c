@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
-#include "transition_table.h"
+#include "ac-matrice.h"
 
 #define DEF_VALUE -1
 
@@ -90,4 +90,8 @@ void dispose_trie(Trie t){
             free(t->transition[i]);
         }
     }
+}
+
+int main(void) {
+    exit(0);
 }

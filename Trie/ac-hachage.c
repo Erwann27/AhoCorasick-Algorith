@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
-#include "hash_trie.h"
+#include "ac-hachage.h"
 
 #define DEF_VALUE NULL
 
@@ -122,4 +122,8 @@ int isInTrie(Trie trie, unsigned char *w){
 
 int hashFun(int node, unsigned char transition, Trie t){
     return(node * 17 + transition * 13) % (int)(t->maxNode * FILL_RATE);
+}
+
+int main(void) {
+    exit(0);
 }
