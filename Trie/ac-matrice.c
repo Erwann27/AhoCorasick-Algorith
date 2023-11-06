@@ -4,6 +4,45 @@
 #include "ac-matrice.h"
 
 #define DEF_VALUE -1
+#define MAX_NODE 100
+#define BUF_SIZE 128
+
+int main(int argc, char **argv) {
+    if (argc != 3) {
+        fprintf(stderr, "expected 2 arguments : a file path with words and a file path with a text");
+        exit(EXIT_FAILURE);
+    }
+
+    // Récupération des arguments
+    char *words_file_path = argv[1];
+    char *text_file_path = argv[2];
+    text_file_path = text_file_path;
+    // Création Trie
+
+    Trie trie = createTrie(MAX_NODE);
+
+
+    // Remplissage Trie avec les mots dans fichier de mots
+
+    FILE *f = fopen(words_file_path, "r");
+    if (f == NULL) {
+        fprintf(stderr, "error on fopen\n");
+        exit(EXIT_FAILURE);
+    }    
+    unsigned char buffer[BUF_SIZE];
+    while(fgets((char *) buffer, BUF_SIZE, f) != NULL) {
+        insertInTrie(trie, buffer);
+    }
+    unsigned char test[] = "za";
+    printf("%d\n", isInTrie(trie, test));
+    // Récupération contenu du fichier texte avec fgets ? Ou autre chose
+
+    // Appel de Aho-Corasick sur les paramètres et récupération du nombre d'occurrences
+
+    // Affichage du nombre d'occurrences
+
+    return EXIT_SUCCESS;
+}
 
 Trie createTrie(int maxNode){
     Trie t = malloc(sizeof(struct _trie));
@@ -92,6 +131,3 @@ void dispose_trie(Trie t){
     }
 }
 
-int main(void) {
-    exit(0);
-}
