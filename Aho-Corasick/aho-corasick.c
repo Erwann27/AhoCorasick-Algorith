@@ -1,4 +1,4 @@
-#include "aho_corasick.h"
+#include "aho-corasick.h"
 
 size_t aho_corasick(Trie trie, size_t word_count, char *text, size_t text_length) {
     trie = trie;

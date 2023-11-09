@@ -3,7 +3,7 @@
 #include <limits.h>
 #include <string.h>
 #include "ac-hachage.h"
-#include "../Aho-Corasick/aho_corasick.c"
+#include "../Aho-Corasick/aho-corasick.c"
 
 #define DEF_VALUE NULL
 #define MAX_NODE 100
