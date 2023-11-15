@@ -93,6 +93,10 @@ void insertInTrie(Trie trie, unsigned char *w){
     trie->finite[currentNode] = 1;
 }
 
+void create_transition(Trie trie, int start_node, char letter, int target_node){
+    trie->transition[start_node][(unsigned char)letter] = target_node;
+}
+
 void dispose_trie(Trie t){
     for(int i = 0; i < t->maxNode; i += 1){
         if(t->transition[i] != NULL){
