@@ -61,7 +61,7 @@ int isInTrie(Trie trie, unsigned char *w){
 }
 
 int is_transition(Trie trie, int start_node, char letter){
-    int hashPosition = hashFun(start_node, letter, trie);
+    int hashPosition = hashFun(start_node, (unsigned char)letter, trie);
     if(trie->transition[hashPosition] == NULL){
         return 0;
     }
@@ -80,7 +80,6 @@ void insertInTrie(Trie trie, unsigned char *w){
         fprintf(stderr, "Erreur w == NULL\n");
         return;
     }
-    // printf("Insertion de : %s\n", w);
     int currentNode = 0;
     for(int i = 0; w[i] != '\0'; i += 1){
         // printf("Noeud courrant : %d\n", currentNode);
@@ -136,7 +135,39 @@ void insertInTrie(Trie trie, unsigned char *w){
 }
 
 void create_transition(Trie trie, int start_node, char letter, int target_node){
-    int hashPosition = hashFun(start_node, letter, trie);
+    int hashPosition = hashFun(start_node, (unsigned char)letter, trie);
+    if(trie->transition[hashPosition] == NULL){
+        List list = malloc(sizeof(List));
+        if(list == NULL){
+            fprintf(stderr, "Erreur allocation list\n");
+            return;
+        }
+        list->startNode = start_node;
+        list->letter = (unsigned char)letter;
+        list->targetNode = target_node;
+        list->next = NULL;
+        trie->transition[hashPosition] = list;
+        trie->nextNode += 1;
+    } else {
+        List list = trie->transition[hashPosition];
+        while (list->next != NULL && list->letter != letter 
+            && list->startNode != start_node){
+            list = list->next;                
+        }
+        // LA LISTE OBTENUE AVEC LA FONCTION DE HACHAGE NE CONTIENT
+        // PAS LE NOEUD OUF
+        if(list->next == NULL && list->startNode != start_node){
+            List nextListe = malloc(sizeof(List));
+            if(nextListe == NULL){
+                fprintf(stderr, "Erreur allocation list\n");
+                return;
+            }
+            list->next = nextListe;
+            nextListe->startNode = start_node;
+            nextListe->letter = (unsigned char)letter;
+            nextListe->targetNode = target_node;
+        }
+    }
 }
 
 
