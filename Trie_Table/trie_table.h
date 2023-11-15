@@ -13,11 +13,16 @@ typedef struct _trie *Trie;
 
 extern Trie createTrie(int maxNode);
 
-extern void insertInTrie(Trie trie, unsigned char *w);
+extern int is_transition(Trie trie, int start_node, char letter);
 
 extern int isInTrie(Trie trie, unsigned char *w);
+
+extern void insertInTrie(Trie trie, unsigned char *w);
 
 extern void print_trie(Trie t);
 
 extern void dispose_trie(Trie t);
+
+extern void create_transition(Trie trie, int start_node, char letter, int target_node);
+
 #endif

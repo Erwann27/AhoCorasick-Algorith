@@ -7,18 +7,17 @@ rebuild: clean all
 
 all: ac-matrice ac-hachage
 
-ac-matrice: ac-matrice.o ac-matrice.h
+ac-matrice: ac-matrice.o
 	$(CC) -o ac-matrice ac-matrice.o $(LDFLAGS)
 
 ac-matrice.o: ac-matrice.c
 	$(CC) -c ac-matrice.c $(CFLAGS)
 
-ac-hachage: ac-hachage.o ac-hachage.h
+ac-hachage: ac-hachage.o
 	$(CC) -o ac-hachage ac-hachage.o $(LDFLAGS)
 
 ac-hachage.o: ac-hachage.c
 	$(CC) -c ac-hachage.c $(CFLAGS)
-
 
 clean:
 	$(RM) -f *.o ac-matrice ac-hachage

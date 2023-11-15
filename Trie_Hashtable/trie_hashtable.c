@@ -2,72 +2,11 @@
 #include <stdio.h>
 #include <limits.h>
 #include <string.h>
-#include "ac-hachage.h"
-#include "../Aho-Corasick/aho-corasick.c"
+#include "trie_hashtable.h"
 
 #define DEF_VALUE NULL
-#define MAX_NODE 100
-#define BUF_SIZE 128
-#define MAX_TEXT_LENGTH 5000000
 
 int hashFun(int node, unsigned char transition, Trie t);
-
-int main(int argc, char **argv) {
-    if (argc != 3) {
-        fprintf(stderr, "expected 2 arguments : a file path with words and a file path with a text");
-        exit(EXIT_FAILURE);
-    }
-
-    // Récupération des arguments
-    char *words_file_path = argv[1];
-    char *text_file_path = argv[2];
-    text_file_path = text_file_path;
-    // Création Trie
-
-    Trie trie = createTrie(MAX_NODE);
-
-
-    // Remplissage Trie avec les mots dans fichier de mots
-
-    FILE *f = fopen(words_file_path, "r");
-    if (f == NULL) {
-        fprintf(stderr, "error on fopen\n");
-        exit(EXIT_FAILURE);
-    }
-    size_t word_count = 0;
-    unsigned char word[BUF_SIZE];
-    while(fgets((char *) word, BUF_SIZE, f) != NULL) {
-        word[strcspn((char *)word, "\n")] = 0;
-        insertInTrie(trie, word);
-        ++word_count;
-    }
-    if (fclose(f) != 0) {
-      fprintf(stderr, "Error on closing words file\n");
-      exit(EXIT_FAILURE);
-    }
-
-    // Récupération contenu du fichier texte
-    f = fopen(text_file_path, "r");
-    if (f == NULL) {
-      fprintf(stderr, "error on fopen\n");
-      exit(EXIT_FAILURE);
-    }
-
-    char text[MAX_TEXT_LENGTH];
-    while(fgets((char *) word, BUF_SIZE, f) != NULL) {
-        strcpy(text + strlen(text), (char *)word);
-    }
-    if (fclose(f) != 0) {
-      fprintf(stderr, "Error on closing words file\n");
-      exit(EXIT_FAILURE);
-    }
-    // Appel de Aho-Corasick sur les paramètres et récupération du nombre d'occurrences
-    size_t occ_count = aho_corasick(trie, word_count, text, strlen(text));
-    // Affichage du nombre d'occurrences
-    printf("nombre d'occurrences de l'ensemble des mots de %s dans %s : %zu\n",
-          word, text, occ_count);
-    return EXIT_SUCCESS;
-}
 
 Trie createTrie(int maxNode){
     Trie t = malloc(sizeof(struct _trie));
@@ -92,6 +31,48 @@ Trie createTrie(int maxNode){
         t->transition[i] = DEF_VALUE;
     }
     return t;
+}
+
+int isInTrie(Trie trie, unsigned char *w){
+    if(w == NULL){
+        fprintf(stderr, "Erreur w == NULL\n");
+        return -1;
+    }
+    int currentNode = 0;
+    for(int i = 0; w[i] != '\0'; i += 1){
+        int hashPosition = hashFun(currentNode, w[i], trie);
+        if(trie->transition[hashPosition] == NULL){
+            return 0;
+        }
+        List list = trie->transition[hashPosition];
+        while (list->next != NULL && list->letter != w[i] 
+                && list->startNode != currentNode){
+            list = list->next;
+        }
+        if(list->letter != w[i] && list->startNode != currentNode){
+            return 0;
+        }
+        currentNode = list->targetNode;
+    }
+    if(trie->finite[currentNode]){
+        return 1;
+    }
+    return 0;
+}
+
+int is_transition(Trie trie, int start_node, char letter){
+    int hashPosition = hashFun(start_node, letter, trie);
+    if(trie->transition[hashPosition] == NULL){
+        return 0;
+    }
+    List list = trie->transition[hashPosition];
+    while (list->next != NULL && list->letter != letter){
+            list = list->next;
+    }
+    if(list->next == NULL){
+        return 0;
+    }
+    return 1;
 }
 
 void insertInTrie(Trie trie, unsigned char *w){
@@ -154,32 +135,11 @@ void insertInTrie(Trie trie, unsigned char *w){
     trie->finite[currentNode] = 1;
 }
 
-int isInTrie(Trie trie, unsigned char *w){
-    if(w == NULL){
-        fprintf(stderr, "Erreur w == NULL\n");
-        return -1;
-    }
-    int currentNode = 0;
-    for(int i = 0; w[i] != '\0'; i += 1){
-        int hashPosition = hashFun(currentNode, w[i], trie);
-        if(trie->transition[hashPosition] == NULL){
-            return 0;
-        }
-        List list = trie->transition[hashPosition];
-        while (list->next != NULL && list->letter != w[i] 
-                && list->startNode != currentNode){
-            list = list->next;
-        }
-        if(list->letter != w[i] && list->startNode != currentNode){
-            return 0;
-        }
-        currentNode = list->targetNode;
-    }
-    if(trie->finite[currentNode]){
-        return 1;
-    }
-    return 0;
+void create_transition(Trie trie, int start_node, char letter, int target_node){
+    int hashPosition = hashFun(start_node, letter, trie);
 }
+
+
 
 int hashFun(int node, unsigned char transition, Trie t){
     return(node * 17 + transition * 13) % (int)(t->maxNode * FILL_RATE);
