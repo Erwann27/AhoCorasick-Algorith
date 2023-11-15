@@ -42,22 +42,6 @@ Trie createTrie(int maxNode){
     return t;
 }
 
-void insertInTrie(Trie trie, unsigned char *w){
-    if(w == NULL){
-        fprintf(stderr, "Erreur w == NULL\n");
-        return;
-    }
-    int currentNode = 0;
-    for(int i = 0; w[i] != '\0'; i += 1){
-        if(trie->transition[currentNode][w[i]] == -1){
-            trie->transition[currentNode][w[i]] = trie->nextNode;
-            trie->nextNode += 1;
-        }
-        currentNode = trie->transition[currentNode][w[i]];
-    }
-    trie->finite[currentNode] = 1;
-}
-
 int isInTrie(Trie trie, unsigned char *w){
     if(w == NULL){
         fprintf(stderr, "Erreur w == NULL\n");
@@ -76,6 +60,13 @@ int isInTrie(Trie trie, unsigned char *w){
     return 0;
 }
 
+int is_transition(Trie trie, int start_node, char letter){
+    if(trie->transition[start_node][(unsigned char)letter] != DEF_VALUE){
+        return 1;
+    }
+    return 0;
+}
+
 void print_trie(Trie t){
     for(int i = 0; i < t->maxNode; i += 1){
         printf("|");
@@ -84,6 +75,22 @@ void print_trie(Trie t){
         }
         printf("\n");
     }
+}
+
+void insertInTrie(Trie trie, unsigned char *w){
+    if(w == NULL){
+        fprintf(stderr, "Erreur w == NULL\n");
+        return;
+    }
+    int currentNode = 0;
+    for(int i = 0; w[i] != '\0'; i += 1){
+        if(trie->transition[currentNode][w[i]] == -1){
+            trie->transition[currentNode][w[i]] = trie->nextNode;
+            trie->nextNode += 1;
+        }
+        currentNode = trie->transition[currentNode][w[i]];
+    }
+    trie->finite[currentNode] = 1;
 }
 
 void dispose_trie(Trie t){
