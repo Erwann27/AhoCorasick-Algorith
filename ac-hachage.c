@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Trie_Hashtable/trie_hashtable.h"
-#include "Aho-Corasick/aho-corasick.h"
+// #include "Aho-Corasick/aho-corasick.h"
 
 #define MAX_NODE 100
 #define BUF_SIZE 128
@@ -11,7 +11,7 @@
 
 int main(int argc, char **argv) {
     if (argc != 3) {
-        fprintf(stderr, "expected 2 arguments : a file path with words and a file path with a text");
+        fprintf(stderr, "expected 2 arguments : a file path with words and a file path with a text\n");
         exit(EXIT_FAILURE);
     }
 
@@ -59,9 +59,10 @@ int main(int argc, char **argv) {
       exit(EXIT_FAILURE);
     }
     // Appel de Aho-Corasick sur les paramètres et récupération du nombre d'occurrences
-    size_t occ_count = aho_corasick(trie, word_count, text, strlen(text));
+    // size_t occ_count = aho_corasick(trie, word_count, text, strlen(text));
+
     // Affichage du nombre d'occurrences
-    printf("nombre d'occurrences de l'ensemble des mots de %s dans %s : %zu\n",
-          word, text, occ_count);
+    // printf("nombre d'occurrences de l'ensemble des mots de %s dans %s : %zu\n",
+    //       word, text, occ_count);
     return EXIT_SUCCESS;
 }
