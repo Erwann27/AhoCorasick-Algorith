@@ -9,23 +9,32 @@ rebuild: clean all
 
 all: $(BIN_DIR) ac-matrice ac-hachage
 
-ac-matrice: $(BIN_DIR)/ac-matrice.o $(BIN_DIR)/trie_table.o
+ac-matrice: $(BIN_DIR)/ac-matrice.o $(BIN_DIR)/trie_table.o $(BIN_DIR)/aho-corasick.o 
 	$(CC) -o ac-matrice $(BIN_DIR)/trie_table.o $(BIN_DIR)/ac-matrice.o $(LDFLAGS)
 
 $(BIN_DIR)/ac-matrice.o: ac-matrice.c
-	$(CC) -c ac-matrice.c -o $@ $(CFLAGS)
-
+	$(CC) -o $@ -c ac-matrice.c $(CFLAGS)
+	
 $(BIN_DIR)/trie_table.o: Trie_Table/trie_table.c
-	$(CC) -c Trie_Table/trie_table.c -o $@ $(CFLAGS)
+	$(CC) -o $@ -c Trie_Table/trie_table.c $(CFLAGS)
+
+$(BIN_DIR)/aho-corasick.o: Aho-Corasick/aho-corasick.c Trie_Table/trie_table.h
+	$(CC) -o $@ -c Aho-Corasick/aho-corasick.c $(CFLAGS)
+
+
+
 
 ac-hachage: $(BIN_DIR)/ac-hachage.o $(BIN_DIR)/trie_hashtable.o
 	$(CC) -o ac-hachage $(BIN_DIR)/trie_hashtable.o $(BIN_DIR)/ac-hachage.o $(LDFLAGS)
 
 $(BIN_DIR)/ac-hachage.o: ac-hachage.c
-	$(CC) -c ac-hachage.c -o $@ $(CFLAGS)
+	$(CC) -o $@ -c ac-hachage.c $(CFLAGS)
 
 $(BIN_DIR)/trie_hashtable.o: Trie_Hashtable/trie_hashtable.c
-	$(CC) -c Trie_Hashtable/trie_hashtable.c -o $@ $(CFLAGS)
+	$(CC) -o $@ -c Trie_Hashtable/trie_hashtable.c $(CFLAGS)
+
+
+
 
 $(BIN_DIR):
 	mkdir $@
