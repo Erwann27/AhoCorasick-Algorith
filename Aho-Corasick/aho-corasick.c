@@ -1,4 +1,10 @@
+#include <stdlib.h>
+#include <limits.h>
 #include "aho-corasick.h"
+#include "../Queue/queue.h"
+
+Trie pre_ac(char **word_list, size_t word_count);
+void complete(Trie *t);
 
 size_t aho_corasick(Trie trie, size_t word_count, char *text, size_t text_length) {
     trie = trie;
@@ -20,4 +26,9 @@ Trie pre_ac(char **word_list, size_t word_count){
     }
     // complete(0);
     return trie;
+}
+
+void complete(Trie *t){
+    Queue *q = create_queue();
+    
 }
