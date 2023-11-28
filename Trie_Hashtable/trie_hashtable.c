@@ -75,6 +75,22 @@ int is_transition(Trie trie, int start_node, char letter){
     return 1;
 }
 
+int get_target(Trie trie, int start_node, char letter){
+    int hashPosition = hashFun(start_node, (unsigned char)letter, trie);
+    if(trie->transition[hashPosition] == NULL){
+        return -1;
+    }
+    List list = trie->transition[hashPosition];
+    while (list->next != NULL && list->letter != letter){
+            list = list->next;
+    }
+    if(list->next == NULL){
+        return -1;
+    }
+    return list->targetNode;
+}
+
+
 void insertInTrie(Trie trie, unsigned char *w){
     if(w == NULL){
         fprintf(stderr, "Erreur w == NULL\n");

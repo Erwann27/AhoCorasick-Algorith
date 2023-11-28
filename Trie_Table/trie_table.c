@@ -67,6 +67,11 @@ int is_transition(Trie trie, int start_node, char letter){
     return 0;
 }
 
+int get_target(Trie trie, int start_node, char letter){
+    return trie->transition[start_node][(unsigned char)letter];
+}
+
+
 void print_trie(Trie t){
     for(int i = 0; i < t->maxNode; i += 1){
         printf("|");

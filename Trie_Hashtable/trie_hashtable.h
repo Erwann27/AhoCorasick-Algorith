@@ -25,6 +25,8 @@ extern int isInTrie(Trie trie, unsigned char *w);
 
 extern int is_transition(Trie trie, int start_node, char letter);
 
+extern int get_target(Trie trie, int start_node, char letter);
+
 extern void insertInTrie(Trie trie, unsigned char *w);
 
 extern void create_transition(Trie trie, int start_node, char letter, int target_node);
