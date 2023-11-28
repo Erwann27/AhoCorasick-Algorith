@@ -5,6 +5,12 @@
 #include "../Queue/queue.h"
 #include "../List/list.h"
 
+#ifdef MATRICE
+#include "../Trie_Table/trie_table.h"
+#else
+#include "../Trie_Hashtable/trie_hashtable.h"
+#endif
+
 #define MAX_NODE 64
 
 typedef struct transition
@@ -29,8 +35,8 @@ size_t aho_corasick(char **word_list, size_t word_count, unsigned char *text, si
         }
         current_node = get_target(e, current_node, text[j]);
         if(is_finite_node(e, current_node)){
-            printf("Un mot de l'entrée à été trouvé\n");
             count += 1;
+            // printf("Un mot de l'entrée à été trouvé\n");
         }
     }
     return count;
@@ -52,6 +58,7 @@ Trie pre_ac(char **word_list, size_t word_count){
 
 void complete(Trie *t){
     Queue *q = create_queue();
+
     List *l = create_list();
     for(unsigned char c = 0; c < UCHAR_MAX; c += 1){
         Transition *transition = malloc(sizeof transition);
@@ -74,7 +81,7 @@ void complete(Trie *t){
         sup[transition->target_node] = 0;
     }
 
-    while (queue_size(q) != 0){
+    while (!queue_is_empty(q)){
         int start_node = *(int *)dequeue(q);
         for(unsigned char c = 0; c < UCHAR_MAX; c += 1){
             Transition *transition = malloc(sizeof(Transition));
@@ -100,8 +107,9 @@ void complete(Trie *t){
                 s = sup[s];
             }
             sup[transition->target_node] = get_target(*t, s, transition->letter);
+
             if(is_finite_node(*t, sup[transition->target_node]) || is_finite_node(*t, transition->target_node)){
-                declare_finite_state(*t, transition->start_node);
+                declare_finite_state(*t, transition->target_node);
             }
         }
     }

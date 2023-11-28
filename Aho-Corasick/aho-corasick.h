@@ -1,6 +1,5 @@
 #ifndef __AHO_CORASICK__
 #define __AHO_CORASICK__
-#include "../Trie_Table/trie_table.h"
 
 
 // aho_corasick : Renvoie le nombre d'occurrences des word_count mots contenus dans trie
