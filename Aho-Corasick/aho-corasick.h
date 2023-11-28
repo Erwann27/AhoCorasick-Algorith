@@ -1,6 +1,6 @@
 #ifndef __AHO_CORASICK__
 #define __AHO_CORASICK__
-
+#include <stdlib.h>
 
 // aho_corasick : Renvoie le nombre d'occurrences des word_count mots contenus dans trie
 //  dans text de longueur text_length.

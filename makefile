@@ -24,7 +24,7 @@ $(BIN_DIR)/ac-matrice.o: ac-matrice.c Aho-Corasick/aho-corasick.h
 
 
 ac-hachage: $(BIN_DIR)/ac-hachage.o $(BIN_DIR)/trie_hashtable.o $(BIN_DIR)/aho-corasick-hashtable.o $(BIN_DIR)/queue.o $(BIN_DIR)/list.o
-	$(CC) -o ac-hachage $(BIN_DIR)/trie_hashtable.o $(BIN_DIR)/ac-hachage.o $(LDFLAGS)
+	$(CC) -o ac-hachage $(BIN_DIR)/queue.o $(BIN_DIR)/list.o $(BIN_DIR)/trie_hashtable.o $(BIN_DIR)/aho-corasick-hashtable.o $(BIN_DIR)/ac-hachage.o $(LDFLAGS)
 
 $(BIN_DIR)/trie_hashtable.o: Trie_Hashtable/trie_hashtable.c
 	$(CC) -o $@ -c Trie_Hashtable/trie_hashtable.c $(CFLAGS)
