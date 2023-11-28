@@ -16,7 +16,7 @@ Trie createTrie(int maxNode){
     }
     t->maxNode = maxNode;
     t->nextNode = 1;
-    t->transition = malloc((size_t)(maxNode) * sizeof(List *));
+    t->transition = malloc((size_t)(maxNode) * sizeof(TransitionList *));
     if(t->transition == NULL){
         fprintf(stderr, "Erreur allocation transition\n");
         return NULL;
@@ -44,7 +44,7 @@ int isInTrie(Trie trie, unsigned char *w){
         if(trie->transition[hashPosition] == NULL){
             return 0;
         }
-        List list = trie->transition[hashPosition];
+        TransitionList list = trie->transition[hashPosition];
         while (list->next != NULL && list->letter != w[i] 
                 && list->startNode != currentNode){
             list = list->next;
@@ -65,7 +65,7 @@ int is_transition(Trie trie, int start_node, unsigned char letter){
     if(trie->transition[hashPosition] == NULL){
         return 0;
     }
-    List list = trie->transition[hashPosition];
+    TransitionList list = trie->transition[hashPosition];
     while (list->next != NULL && list->letter != letter){
             list = list->next;
     }
@@ -80,7 +80,7 @@ int get_target(Trie trie, int start_node, unsigned char letter){
     if(trie->transition[hashPosition] == NULL){
         return -1;
     }
-    List list = trie->transition[hashPosition];
+    TransitionList list = trie->transition[hashPosition];
     while (list->next != NULL && list->letter != letter){
             list = list->next;
     }
@@ -108,7 +108,7 @@ void insertInTrie(Trie trie, unsigned char *w){
         // LA FONCTION DE HACHAGE NOUS RENVOIE UNE POSITION OU AUCUNE
         // LISTE N'EST INITIALISEE
         if(trie->transition[hashPosition] == NULL){
-            List list = malloc(sizeof(List));
+            TransitionList list = malloc(sizeof(TransitionList));
             if(list == NULL){
                 fprintf(stderr, "Erreur allocation list\n");
                 return;
@@ -122,7 +122,7 @@ void insertInTrie(Trie trie, unsigned char *w){
             trie->nextNode += 1;
         }
         else {
-            List list = trie->transition[hashPosition];
+            TransitionList list = trie->transition[hashPosition];
             while (list->next != NULL && list->letter != w[i] 
                 && list->startNode != currentNode){
                 list = list->next;                
@@ -130,7 +130,7 @@ void insertInTrie(Trie trie, unsigned char *w){
             // LA LISTE OBTENUE AVEC LA FONCTION DE HACHAGE NE CONTIENT
             // PAS LE NOEUD SOUHAITE
             if(list->next == NULL && list->startNode != currentNode){
-                List nextListe = malloc(sizeof(List));
+                TransitionList nextListe = malloc(sizeof(TransitionList));
                 if(nextListe == NULL){
                     fprintf(stderr, "Erreur allocation list\n");
                     return;
@@ -160,7 +160,7 @@ void declare_finite_state(Trie trie, int node){
 void create_transition(Trie trie, int start_node, char letter, int target_node){
     int hashPosition = hashFun(start_node, (unsigned char)letter, trie);
     if(trie->transition[hashPosition] == NULL){
-        List list = malloc(sizeof(List));
+        TransitionList list = malloc(sizeof(TransitionList));
         if(list == NULL){
             fprintf(stderr, "Erreur allocation list\n");
             return;
@@ -172,7 +172,7 @@ void create_transition(Trie trie, int start_node, char letter, int target_node){
         trie->transition[hashPosition] = list;
         trie->nextNode += 1;
     } else {
-        List list = trie->transition[hashPosition];
+        TransitionList list = trie->transition[hashPosition];
         while (list->next != NULL && list->letter != letter 
             && list->startNode != start_node){
             list = list->next;                
@@ -180,7 +180,7 @@ void create_transition(Trie trie, int start_node, char letter, int target_node){
         // LA LISTE OBTENUE AVEC LA FONCTION DE HACHAGE NE CONTIENT
         // PAS LE NOEUD OUF
         if(list->next == NULL && list->startNode != start_node){
-            List nextListe = malloc(sizeof(List));
+            TransitionList nextListe = malloc(sizeof(TransitionList));
             if(nextListe == NULL){
                 fprintf(stderr, "Erreur allocation list\n");
                 return;

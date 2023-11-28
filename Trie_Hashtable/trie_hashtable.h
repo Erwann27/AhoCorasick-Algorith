@@ -4,18 +4,18 @@
 #define FILL_RATE 0.75
 
 struct _list {
-int startNode, /* etat de depart de la transition */
-targetNode; /* cible de la transition */
-unsigned char letter; /* etiquette de la transition */
-struct _list *next; /* maillon suivant */
+    int startNode, /* etat de depart de la transition */
+    targetNode; /* cible de la transition */
+    unsigned char letter; /* etiquette de la transition */
+    struct _list *next; /* maillon suivant */
 };
-typedef struct _list *List;
+typedef struct _list *TransitionList;
 
 struct _trie {
-int maxNode; /* Nombre maximal de noeuds du trie */
-int nextNode; /* Indice du prochain noeud disponible */
-List *transition; /* listes d’adjacence */
-char *finite; /* etats terminaux */
+    int maxNode; /* Nombre maximal de noeuds du trie */
+    int nextNode; /* Indice du prochain noeud disponible */
+    TransitionList *transition; /* listes d’adjacence */
+    char *finite; /* etats terminaux */
 };
 typedef struct _trie *Trie;
 
