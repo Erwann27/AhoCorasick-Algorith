@@ -36,6 +36,10 @@ int is_empty(List *list){
     return 0;
 }
 
+size_t list_size(List *list){
+    return list->size;
+}
+
 void append(List *list, const void *xptr){
     if(xptr == NULL){
         dispose_list(&list);

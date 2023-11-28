@@ -21,12 +21,17 @@ Queue *create_queue(void){
         return NULL;
     }
     q->head = NULL;
+    q->tail = NULL;
     q->size = 0;
     return q;
 }
 
 int queue_is_empty(Queue *q){
     return q->size == 0 ? 1 : 0;
+}
+
+size_t queue_size(Queue *q){
+    return q->size;
 }
 
 void enque(Queue *q, const void *xptr){
@@ -50,6 +55,7 @@ void enque(Queue *q, const void *xptr){
 }
 
 const void *dequeue(Queue *q){
+    
     if(q->size == 0){
         exit(EXIT_FAILURE);
     }

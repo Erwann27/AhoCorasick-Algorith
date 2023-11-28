@@ -8,6 +8,8 @@ extern List *create_list(void);
 
 extern int is_empty(List *list);
 
+extern size_t list_size(List *list);
+
 // Append xptr to list
 extern void append(List *list, const void *xptr);
 

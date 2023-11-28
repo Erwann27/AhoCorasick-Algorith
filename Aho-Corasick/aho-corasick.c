@@ -5,7 +5,7 @@
 #include "../Queue/queue.h"
 #include "../List/list.h"
 
-#define MAX_NODE 100
+#define MAX_NODE 64
 
 typedef struct transition
 {
@@ -46,7 +46,7 @@ Trie pre_ac(char **word_list, size_t word_count){
             create_transition(trie, 0, (char)a, 0);
         }
     }
-    // complete(0);
+    complete(&trie);
     return trie;
 }
 
@@ -63,19 +63,21 @@ void complete(Trie *t){
         transition->start_node = 0;
         transition->letter = c;
         transition->target_node = get_target(*t, 0, c);
-        append(l, transition);
+        if(transition->start_node != transition->target_node){
+            append(l, (const void *)transition);
+        }
     }
 
     while (!is_empty(l)){
         Transition *transition = (Transition *)retrieve(l);
-        enque(q, &transition->target_node);
+        enque(q, (const void *)&transition->target_node);
         sup[transition->target_node] = 0;
     }
 
-    while (!queue_is_empty(q)){
+    while (queue_size(q) != 0){
         int start_node = *(int *)dequeue(q);
         for(unsigned char c = 0; c < UCHAR_MAX; c += 1){
-            Transition *transition = malloc(sizeof transition);
+            Transition *transition = malloc(sizeof(Transition));
             if(transition == NULL){
                 dispose_queue(&q);
                 dispose_list(&l);
@@ -84,18 +86,22 @@ void complete(Trie *t){
             transition->start_node = start_node;
             transition->letter = c;
             transition->target_node = get_target(*t, start_node, c);
-            append(l, transition);
+            if(transition->target_node != -1){
+                append(l, (const void *)transition);
+            }
         }
+
+
         while (!is_empty(l)){
             Transition *transition = (Transition *)retrieve(l);
-            enque(q, &transition->target_node);
+            enque(q, (const void *)&transition->target_node);
             int s = sup[transition->start_node];
             while (!is_transition(*t, s, transition->letter)){
                 s = sup[s];
             }
             sup[transition->target_node] = get_target(*t, s, transition->letter);
-            if(is_finite_node(*t, sup[transition->target_node])){
-                declare_finite_state(*t, transition->target_node);
+            if(is_finite_node(*t, sup[transition->target_node]) || is_finite_node(*t, transition->target_node)){
+                declare_finite_state(*t, transition->start_node);
             }
         }
     }
