@@ -3,7 +3,6 @@
 #include <limits.h>
 #include <string.h>
 #include "trie_table.h"
-#include "../Aho-Corasick/aho-corasick.c"
 
 #define DEF_VALUE -1
 
