@@ -6,6 +6,8 @@ typedef struct Queue Queue;
 // Create an empty queue
 extern Queue *create_queue(void);
 
+extern int queue_is_empty(Queue *q);
+
 // Enqueue xptr in q
 extern void enque(Queue *q, const void *xptr);
 

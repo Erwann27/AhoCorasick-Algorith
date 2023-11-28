@@ -60,8 +60,8 @@ int isInTrie(Trie trie, unsigned char *w){
     return 0;
 }
 
-int is_transition(Trie trie, int start_node, char letter){
-    int hashPosition = hashFun(start_node, (unsigned char)letter, trie);
+int is_transition(Trie trie, int start_node, unsigned char letter){
+    int hashPosition = hashFun(start_node, letter, trie);
     if(trie->transition[hashPosition] == NULL){
         return 0;
     }
@@ -75,7 +75,7 @@ int is_transition(Trie trie, int start_node, char letter){
     return 1;
 }
 
-int get_target(Trie trie, int start_node, char letter){
+int get_target(Trie trie, int start_node, unsigned char letter){
     int hashPosition = hashFun(start_node, (unsigned char)letter, trie);
     if(trie->transition[hashPosition] == NULL){
         return -1;
@@ -90,6 +90,9 @@ int get_target(Trie trie, int start_node, char letter){
     return list->targetNode;
 }
 
+int is_finite_node(Trie trie, int node){
+    return trie->finite[node];
+}
 
 void insertInTrie(Trie trie, unsigned char *w){
     if(w == NULL){
@@ -148,6 +151,10 @@ void insertInTrie(Trie trie, unsigned char *w){
         }
     }
     trie->finite[currentNode] = 1;
+}
+
+void declare_finite_state(Trie trie, int node){
+    trie->finite[node] = 1;
 }
 
 void create_transition(Trie trie, int start_node, char letter, int target_node){

@@ -6,6 +6,8 @@ typedef struct _list List;
 // Create an empty list
 extern List *create_list(void);
 
+extern int is_empty(List *list);
+
 // Append xptr to list
 extern void append(List *list, const void *xptr);
 

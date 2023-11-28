@@ -7,7 +7,6 @@ typedef struct clist clist;
 struct clist {
   const void *value;
   clist *next;
-//   clist *prev;
 };
 
 struct _list {
@@ -28,6 +27,13 @@ List *create_list(void){
     l->tail = NULL;
     l->size = 0;
     return l;
+}
+
+int is_empty(List *list){
+    if(list->size == 0){
+        return 1;
+    }
+    return 0;
 }
 
 void append(List *list, const void *xptr){

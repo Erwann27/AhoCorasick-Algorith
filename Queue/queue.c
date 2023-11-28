@@ -25,6 +25,10 @@ Queue *create_queue(void){
     return q;
 }
 
+int queue_is_empty(Queue *q){
+    return q->size == 0 ? 1 : 0;
+}
+
 void enque(Queue *q, const void *xptr){
     if(xptr == NULL){
         exit(EXIT_FAILURE);
