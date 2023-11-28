@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <limits.h>
 #include "aho-corasick.h"
 #include "../Queue/queue.h"
@@ -18,10 +19,21 @@ int sup[MAX_NODE];
 Trie pre_ac(char **word_list, size_t word_count);
 void complete(Trie *t);
 
-size_t aho_corasick(char *text, size_t text_length) {
-    text = text;
-    text_length = text_length;
-    return 0;
+size_t aho_corasick(char **word_list, size_t word_count, unsigned char *text, size_t text_length) {
+    Trie e = pre_ac(word_list, word_count);
+    size_t count = 0;
+    int current_node = 0;
+    for(size_t j = 0; j < text_length; j += 1){
+        while (!is_transition(e, current_node, text[j])){
+            current_node = sup[current_node];
+        }
+        current_node = get_target(e, current_node, text[j]);
+        if(is_finite_node(e, current_node)){
+            printf("Un mot de l'entrée à été trouvé\n");
+            count += 1;
+        }
+    }
+    return count;
 }
 
 Trie pre_ac(char **word_list, size_t word_count){
