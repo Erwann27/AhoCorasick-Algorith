@@ -18,7 +18,6 @@ int main(int argc, char **argv) {
     // Récupération des arguments
     char *words_file_path = argv[1];
     char *text_file_path = argv[2];
-    text_file_path = text_file_path;
     // Création Trie
 
     FILE *f = fopen(words_file_path, "r");
@@ -43,7 +42,7 @@ int main(int argc, char **argv) {
         }
     }
     while(fgets((char *) word, BUF_SIZE, f) != NULL) {
-        strcpy(words[word_count], (char *)word);  
+        strncpy(words[word_count], (char *)word, strlen(word) - 1);  
         ++word_count;
     }
     if (fclose(f) != 0) {
@@ -68,13 +67,12 @@ int main(int argc, char **argv) {
     }
 
     // // Appel de Aho-Corasick sur les paramètres et récupération du nombre d'occurrences
-    printf("AVANT AHO-CORASICK\n");
     size_t occ_count = aho_corasick(words, word_count, (unsigned char *)text, strlen(text));
 
     // Affichage du nombre d'occurrences
     // printf("nombre d'occurrences de l'ensemble des mots de %s dans %s : %zu\n",
     //   word, text, occ_count);
-    printf("Nb d'occurrence : %zu\n", occ_count);
+    printf("%zu\n", occ_count);
 
     return EXIT_SUCCESS;
 }

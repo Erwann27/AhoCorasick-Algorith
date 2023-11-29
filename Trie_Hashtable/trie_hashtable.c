@@ -66,25 +66,26 @@ int is_transition(Trie trie, int start_node, unsigned char letter){
         return 0;
     }
     TransitionList list = trie->transition[hashPosition];
-    while (list->next != NULL && list->letter != letter){
+    while (list->next != NULL && (list->startNode != start_node || list->letter != letter)){
             list = list->next;
     }
-    if(list->next == NULL){
+    if(list->startNode != start_node || list->letter != letter){
         return 0;
     }
     return 1;
 }
 
 int get_target(Trie trie, int start_node, unsigned char letter){
-    int hashPosition = hashFun(start_node, (unsigned char)letter, trie);
+    int hashPosition = hashFun(start_node, letter, trie);
     if(trie->transition[hashPosition] == NULL){
         return -1;
     }
     TransitionList list = trie->transition[hashPosition];
-    while (list->next != NULL && list->letter != letter){
-            list = list->next;
+    while (list->next != NULL && (list->startNode != start_node || list->letter != letter)){
+        list = list->next;
     }
-    if(list->next == NULL){
+
+    if(list->startNode != start_node || list->letter != letter){
         return -1;
     }
     return list->targetNode;

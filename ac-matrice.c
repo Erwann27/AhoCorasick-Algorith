@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
         }
     }
     while(fgets((char *) word, BUF_SIZE, f) != NULL) {
-        strcpy(words[word_count], (char *)word);  
+        strncpy(words[word_count], (char *)word, strlen(word) - 1);  
         ++word_count;
     }
     if (fclose(f) != 0) {
@@ -55,8 +55,10 @@ int main(int argc, char **argv) {
     }
 
     char text[MAX_TEXT_LENGTH];
+    size_t textSize = 0;
     while(fgets((char *) word, BUF_SIZE, f) != NULL) {
-        strcpy(text + strlen(text), (char *)word);
+        strcpy(text + textSize, (char *)word);
+        textSize = strlen(text);
     }
     if (fclose(f) != 0) {
       fprintf(stderr, "Error on closing words file\n");
@@ -69,6 +71,6 @@ int main(int argc, char **argv) {
     // Affichage du nombre d'occurrences
     // printf("nombre d'occurrences de l'ensemble des mots de %s dans %s : %zu\n",
     //   word, text, occ_count);
-    printf("Nb d'occurrence : %zu\n", occ_count);
+    printf("%zu\n", occ_count);
     return EXIT_SUCCESS;
 }

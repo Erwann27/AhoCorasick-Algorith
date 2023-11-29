@@ -24,8 +24,10 @@ Trie createTrie(int maxNode){
         free(t->transition);
         fprintf(stderr, "Erreur allocation finite\n");
     }
-
-    for(int i = 0; i < maxNode; i += 1){
+    for (int i = 0; i < maxNode; i += 1) {
+        t->finite[i] = 0;
+    }
+    for(int i = 0; i < maxNode; i += 1) {
         t->transition[i] = malloc(UCHAR_MAX * sizeof(int));
         if(t->transition[i] == NULL){
             fprintf(stderr, "Erreur allocation cellule tableau\n");

@@ -52,7 +52,7 @@ Trie pre_ac(char **word_list, size_t word_count){
             create_transition(trie, 0, (char)a, 0);
         }
     }
-    complete(&trie);
+    complete(&trie); 
     return trie;
 }
 
@@ -60,17 +60,19 @@ void complete(Trie *t){
     Queue *q = create_queue();
 
     List *l = create_list();
+                                                
     for(unsigned char c = 0; c < UCHAR_MAX; c += 1){
-        Transition *transition = malloc(sizeof transition);
+        Transition *transition = malloc(sizeof(Transition));
         if(transition == NULL){
             dispose_queue(&q);
             dispose_list(&l);
             exit(EXIT_FAILURE);
         }
+
         transition->start_node = 0;
         transition->letter = c;
         transition->target_node = get_target(*t, 0, c);
-        if(transition->start_node != transition->target_node){
+        if(transition->start_node != transition->target_node && transition->target_node != -1){
             append(l, (const void *)transition);
         }
     }
@@ -80,7 +82,6 @@ void complete(Trie *t){
         enque(q, (const void *)&transition->target_node);
         sup[transition->target_node] = 0;
     }
-
     while (!queue_is_empty(q)){
         int start_node = *(int *)dequeue(q);
         for(unsigned char c = 0; c < UCHAR_MAX; c += 1){
@@ -90,6 +91,7 @@ void complete(Trie *t){
                 dispose_list(&l);
                 exit(EXIT_FAILURE);
             }
+
             transition->start_node = start_node;
             transition->letter = c;
             transition->target_node = get_target(*t, start_node, c);
@@ -97,8 +99,6 @@ void complete(Trie *t){
                 append(l, (const void *)transition);
             }
         }
-
-
         while (!is_empty(l)){
             Transition *transition = (Transition *)retrieve(l);
             enque(q, (const void *)&transition->target_node);
@@ -112,6 +112,7 @@ void complete(Trie *t){
                 declare_finite_state(*t, transition->target_node);
             }
         }
+
     }
     dispose_list(&l);
     dispose_queue(&q);
