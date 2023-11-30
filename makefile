@@ -7,7 +7,7 @@ BIN_DIR = bin
 
 rebuild: clean all
 
-all: $(BIN_DIR) ac-matrice ac-hachage
+all: $(BIN_DIR) ac-matrice ac-hachage genere-mots genere-texte
 
 ac-matrice: $(BIN_DIR)/ac-matrice.o $(BIN_DIR)/trie_table.o $(BIN_DIR)/aho-corasick-table.o $(BIN_DIR)/queue.o $(BIN_DIR)/list.o
 	$(CC) -o ac-matrice $(BIN_DIR)/queue.o $(BIN_DIR)/list.o $(BIN_DIR)/trie_table.o $(BIN_DIR)/aho-corasick-table.o $(BIN_DIR)/ac-matrice.o $(LDFLAGS)
@@ -35,16 +35,42 @@ $(BIN_DIR)/aho-corasick-hashtable.o: Aho-Corasick/aho-corasick.c Trie_Hashtable/
 $(BIN_DIR)/ac-hachage.o: ac-hachage.c Aho-Corasick/aho-corasick.h
 	$(CC) -o $@ -c ac-hachage.c $(CFLAGS)
 
+
+
+
 $(BIN_DIR)/queue.o: Queue/queue.c
 	$(CC) -o $@ -c Queue/queue.c $(CFLAGS)
 
 $(BIN_DIR)/list.o: List/list.c
 	$(CC) -o $@ -c List/list.c $(CFLAGS)
 
+
+
+
+genere-mots: $(BIN_DIR)/genere-mots.o 
+	$(CC) -o genere-mots $(BIN_DIR)/genere-mots.o
+
+$(BIN_DIR)/genere-mots.o: Gen/genere-mots.c
+	$(CC) -o $@ -c Gen/genere-mots.c $(CFLAGS)
+
+
+
+genere-texte: $(BIN_DIR)/genere-texte.o 
+	$(CC) -o genere-texte $(BIN_DIR)/genere-texte.o
+
+$(BIN_DIR)/genere-texte.o: Gen/genere-texte.c
+	$(CC) -o $@ -c Gen/genere-texte.c $(CFLAGS)
+
+
+
+
 $(BIN_DIR):
 	mkdir $@
 
+
+
+
 clean:
-	$(RM) -f *.o ac-matrice ac-hachage
+	$(RM) -f *.o ac-matrice ac-hachage genere-mots genere-texte
 	rm -rf $(BIN_DIR)
 
