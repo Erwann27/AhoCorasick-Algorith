@@ -3,6 +3,7 @@
 
 struct _trie
 {
+    int insertedNode; /* Indice du noeud inséré */
     int maxNode;      /* Nombre maximal de noeuds du trie */
     int nextNode;     /* Indice du prochain noeud disponible */
     int **transition; /* matrice de transition */

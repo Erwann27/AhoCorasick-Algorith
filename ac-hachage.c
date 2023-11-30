@@ -4,7 +4,6 @@
 #include "Trie_Hashtable/trie_hashtable.h"
 #include "Aho-Corasick/aho-corasick.h"
 
-#define MAX_NODE 100
 #define BUF_SIZE 128
 #define MAX_TEXT_LENGTH 5000000
 

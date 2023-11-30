@@ -12,6 +12,7 @@ struct _list {
 typedef struct _list *TransitionList;
 
 struct _trie {
+    int insertedNode; /* Indice du noeud inséré */
     int maxNode; /* Nombre maximal de noeuds du trie */
     int nextNode; /* Indice du prochain noeud disponible */
     TransitionList *transition; /* listes d’adjacence */

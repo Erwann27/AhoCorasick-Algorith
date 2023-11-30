@@ -21,6 +21,7 @@ typedef struct transition
 } Transition;
 
 int sup[MAX_NODE];
+int sortie[MAX_NODE];
 
 Trie pre_ac(char **word_list, size_t word_count);
 void complete(Trie *t);
@@ -34,10 +35,7 @@ size_t aho_corasick(char **word_list, size_t word_count, unsigned char *text, si
             current_node = sup[current_node];
         }
         current_node = get_target(e, current_node, text[j]);
-        if(is_finite_node(e, current_node)){
-            count += 1;
-            // printf("Un mot de l'entrée à été trouvé\n");
-        }
+        count += (size_t) sortie[current_node];
     }
     return count;
 }
@@ -46,6 +44,7 @@ Trie pre_ac(char **word_list, size_t word_count){
     Trie trie = createTrie(MAX_NODE);
     for(size_t i = 0; i < word_count; i += 1){
         insertInTrie(trie, (unsigned char*)word_list[i]);
+        sortie[trie->insertedNode] = 1;
     }
     for(unsigned char a = 0; a < UCHAR_MAX; a += 1){
         if(!is_transition(trie, 0, a)){
@@ -108,10 +107,7 @@ void complete(Trie *t){
             }
 
             sup[transition->target_node] = get_target(*t, s, transition->letter);
-
-            if(is_finite_node(*t, sup[transition->target_node]) || is_finite_node(*t, transition->target_node)){
-                declare_finite_state(*t, transition->target_node);
-            }
+            sortie[transition->target_node] += sortie[sup[transition->target_node]];
         }
     }
     dispose_list(&l);

@@ -12,6 +12,7 @@ Trie createTrie(int maxNode){
         fprintf(stderr, "Erreur allocation\n");
         return NULL;
     }
+    t->insertedNode = 0;
     t->maxNode = maxNode;
     t->nextNode = 1;
     t->transition = malloc((size_t)(maxNode) * sizeof(int*));
@@ -100,6 +101,7 @@ void insertInTrie(Trie trie, unsigned char *w){
         currentNode = trie->transition[currentNode][w[i]];
     }
     trie->finite[currentNode] = 1;
+    trie->insertedNode = currentNode;
 }
 
 void declare_finite_state(Trie trie, int node){

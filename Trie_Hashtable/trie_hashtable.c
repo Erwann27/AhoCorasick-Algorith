@@ -14,6 +14,7 @@ Trie createTrie(int maxNode){
         fprintf(stderr, "Erreur malloc");
         exit(EXIT_FAILURE);
     }
+    t->insertedNode = 0;
     t->maxNode = maxNode;
     t->nextNode = 1;
     t->transition = malloc((size_t)(maxNode) * sizeof(TransitionList *));
@@ -151,6 +152,7 @@ void insertInTrie(Trie trie, unsigned char *w){
             }
         }
     }
+    trie->insertedNode = currentNode;
     trie->finite[currentNode] = 1;
 }
 
