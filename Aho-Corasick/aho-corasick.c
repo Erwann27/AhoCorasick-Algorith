@@ -11,7 +11,7 @@
 #include "../Trie_Hashtable/trie_hashtable.h"
 #endif
 
-#define MAX_NODE 64
+#define MAX_NODE 512
 
 typedef struct transition
 {
@@ -76,7 +76,6 @@ void complete(Trie *t){
             append(l, (const void *)transition);
         }
     }
-
     while (!is_empty(l)){
         Transition *transition = (Transition *)retrieve(l);
         enque(q, (const void *)&transition->target_node);
@@ -99,6 +98,7 @@ void complete(Trie *t){
                 append(l, (const void *)transition);
             }
         }
+
         while (!is_empty(l)){
             Transition *transition = (Transition *)retrieve(l);
             enque(q, (const void *)&transition->target_node);
@@ -106,13 +106,13 @@ void complete(Trie *t){
             while (!is_transition(*t, s, transition->letter)){
                 s = sup[s];
             }
+
             sup[transition->target_node] = get_target(*t, s, transition->letter);
 
             if(is_finite_node(*t, sup[transition->target_node]) || is_finite_node(*t, transition->target_node)){
                 declare_finite_state(*t, transition->target_node);
             }
         }
-
     }
     dispose_list(&l);
     dispose_queue(&q);

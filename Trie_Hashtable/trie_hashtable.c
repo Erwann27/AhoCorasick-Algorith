@@ -174,13 +174,11 @@ void create_transition(Trie trie, int start_node, char letter, int target_node){
         trie->nextNode += 1;
     } else {
         TransitionList list = trie->transition[hashPosition];
-        while (list->next != NULL && list->letter != letter 
-            && list->startNode != start_node){
+        while (list->next != NULL){
             list = list->next;                
         }
         // LA LISTE OBTENUE AVEC LA FONCTION DE HACHAGE NE CONTIENT
         // PAS LE NOEUD OUF
-        if(list->next == NULL && list->startNode != start_node){
             TransitionList nextListe = malloc(sizeof(TransitionList));
             if(nextListe == NULL){
                 fprintf(stderr, "Erreur allocation list\n");
@@ -191,7 +189,6 @@ void create_transition(Trie trie, int start_node, char letter, int target_node){
             nextListe->letter = (unsigned char)letter;
             nextListe->targetNode = target_node;
         }
-    }
 }
 
 
