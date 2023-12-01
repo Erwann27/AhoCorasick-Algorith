@@ -11,7 +11,7 @@
 #include "../Trie_Hashtable/trie_hashtable.h"
 #endif
 
-#define MAX_NODE 512
+#define MAX_NODE 8192
 
 typedef struct transition
 {
@@ -37,6 +37,7 @@ size_t aho_corasick(char **word_list, size_t word_count, unsigned char *text, si
         current_node = get_target(e, current_node, text[j]);
         count += (size_t) sortie[current_node];
     }
+    dispose_trie(e);
     return count;
 }
 

@@ -17,20 +17,25 @@ Trie createTrie(int maxNode){
     t->insertedNode = 0;
     t->maxNode = maxNode;
     t->nextNode = 1;
-    t->transition = malloc((size_t)(maxNode) * sizeof(TransitionList *));
-    if(t->transition == NULL){
+    TransitionList *hashtable = malloc((size_t)((maxNode) * (1 / FILL_RATE)) * sizeof(TransitionList));
+    if(hashtable == NULL){
         fprintf(stderr, "Erreur allocation transition\n");
         return NULL;
     }
-    t->finite = malloc((size_t)maxNode * sizeof(int));
-    if(t->finite == NULL){
-        free(t->transition);
+    char *finite = malloc((size_t)maxNode);
+    if(finite == NULL){
+        free(hashtable);
         fprintf(stderr, "Erreur allocation finite\n");
         return NULL;
     }
-    for(int i = 0; i < maxNode * (1 / FILL_RATE); i += 1){
-        t->transition[i] = DEF_VALUE;
+    for(int i = 0; i < maxNode; i += 1){
+        finite[i] = '0';
     }
+    t->finite = finite;
+    for(int i = 0; i < maxNode * (1 / FILL_RATE); i += 1){
+        hashtable[i] = DEF_VALUE;
+    }
+    t->transition = hashtable;
     return t;
 }
 
@@ -193,8 +198,24 @@ void create_transition(Trie trie, int start_node, char letter, int target_node){
         }
 }
 
+void dispose_trie(Trie t) {
+    TransitionList *lists = t -> transition;
 
+    for(int i = 0; i < t->maxNode * (1 / FILL_RATE); ++i) {
+        TransitionList list = lists[i];
+        while(list != NULL) {
+            TransitionList tmp = list -> next;
+            free(list);
+            list = tmp;
+        }
+    }
+   // free(t->transition);
+    //free(t->finite);
+    free(t);
+
+}
 
 int hashFun(int node, unsigned char transition, Trie t){
     return(node * 17 + transition * 13) % (int)(t->maxNode * FILL_RATE);
 }
+

@@ -40,10 +40,13 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
     }
+
     while(fgets((char *) word, BUF_SIZE, f) != NULL) {
         strncpy(words[word_count], (char *)word, strlen(word) - 1);  
         ++word_count;
     }
+          
+
     if (fclose(f) != 0) {
       fprintf(stderr, "Error on closing words file\n");
       exit(EXIT_FAILURE);
@@ -64,7 +67,6 @@ int main(int argc, char **argv) {
       fprintf(stderr, "Error on closing words file\n");
       exit(EXIT_FAILURE);
     }
-
     // // Appel de Aho-Corasick sur les paramètres et récupération du nombre d'occurrences
     size_t occ_count = aho_corasick(words, word_count, (unsigned char *)text, strlen(text));
 

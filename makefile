@@ -74,5 +74,5 @@ clean:
 	$(RM) -f ac-matrice ac-hachage genere-mots genere-texte
 	rm -rf $(BIN_DIR)
 	rm -rf Texts
-	rm result.txt
+	rm -rf result.txt
 

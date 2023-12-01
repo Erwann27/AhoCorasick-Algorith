@@ -36,4 +36,5 @@ extern void declare_finite_state(Trie trie, int node);
 
 extern void create_transition(Trie trie, int start_node, char letter, int target_node);
 
+extern void dispose_trie(Trie t);
 #endif

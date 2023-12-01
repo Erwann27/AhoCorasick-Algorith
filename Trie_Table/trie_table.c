@@ -118,5 +118,8 @@ void dispose_trie(Trie t){
             free(t->transition[i]);
         }
     }
+    free(t->transition);
+    free(t->finite);
+    free(t);
 }
 
