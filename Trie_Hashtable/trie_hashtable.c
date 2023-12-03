@@ -17,21 +17,17 @@ Trie createTrie(int maxNode){
     t->insertedNode = 0;
     t->maxNode = maxNode;
     t->nextNode = 1;
-    TransitionList *hashtable = malloc((size_t)((maxNode) * (1 / FILL_RATE)) * sizeof(TransitionList));
+    TransitionList *hashtable = malloc((size_t)((maxNode) * (1 / FILL_RATE)) * sizeof(struct _list));
     if(hashtable == NULL){
         fprintf(stderr, "Erreur allocation transition\n");
         return NULL;
     }
-    char *finite = malloc((size_t)maxNode);
-    if(finite == NULL){
+    t->finite = calloc((size_t)maxNode, sizeof(char));
+    if(t->finite == NULL){
         free(hashtable);
         fprintf(stderr, "Erreur allocation finite\n");
         return NULL;
     }
-    for(int i = 0; i < maxNode; i += 1){
-        finite[i] = '0';
-    }
-    t->finite = finite;
     for(int i = 0; i < maxNode * (1 / FILL_RATE); i += 1){
         hashtable[i] = DEF_VALUE;
     }
@@ -115,7 +111,7 @@ void insertInTrie(Trie trie, unsigned char *w){
         // LA FONCTION DE HACHAGE NOUS RENVOIE UNE POSITION OU AUCUNE
         // LISTE N'EST INITIALISEE
         if(trie->transition[hashPosition] == NULL){
-            TransitionList list = malloc(sizeof(TransitionList));
+            TransitionList list = malloc(sizeof(struct _list));
             if(list == NULL){
                 fprintf(stderr, "Erreur allocation list\n");
                 return;
@@ -137,7 +133,7 @@ void insertInTrie(Trie trie, unsigned char *w){
             // LA LISTE OBTENUE AVEC LA FONCTION DE HACHAGE NE CONTIENT
             // PAS LE NOEUD SOUHAITE
             if(list->next == NULL && list->startNode != currentNode){
-                TransitionList nextListe = malloc(sizeof(TransitionList));
+                TransitionList nextListe = malloc(sizeof(struct _list));
                 if(nextListe == NULL){
                     fprintf(stderr, "Erreur allocation list\n");
                     return;
@@ -168,7 +164,7 @@ void declare_finite_state(Trie trie, int node){
 void create_transition(Trie trie, int start_node, char letter, int target_node){
     int hashPosition = hashFun(start_node, (unsigned char)letter, trie);
     if(trie->transition[hashPosition] == NULL){
-        TransitionList list = malloc(sizeof(TransitionList));
+        TransitionList list = malloc(sizeof(struct _list));
         if(list == NULL){
             fprintf(stderr, "Erreur allocation list\n");
             return;
@@ -186,7 +182,7 @@ void create_transition(Trie trie, int start_node, char letter, int target_node){
         }
         // LA LISTE OBTENUE AVEC LA FONCTION DE HACHAGE NE CONTIENT
         // PAS LE NOEUD OUF
-            TransitionList nextListe = malloc(sizeof(TransitionList));
+            TransitionList nextListe = malloc(sizeof(struct _list));
             if(nextListe == NULL){
                 fprintf(stderr, "Erreur allocation list\n");
                 return;
@@ -209,8 +205,8 @@ void dispose_trie(Trie t) {
             list = tmp;
         }
     }
-   // free(t->transition);
-    //free(t->finite);
+    free(t->transition);
+    free(t->finite);
     free(t);
 
 }

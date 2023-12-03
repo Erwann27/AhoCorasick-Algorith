@@ -55,7 +55,6 @@ void enque(Queue *q, const void *xptr){
 }
 
 const void *dequeue(Queue *q){
-    
     if(q->size == 0){
         exit(EXIT_FAILURE);
     }

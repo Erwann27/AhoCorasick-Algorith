@@ -60,12 +60,13 @@ void complete(Trie *t){
     Queue *q = create_queue();
 
     List *l = create_list();
-                                                
+                        
     for(unsigned char c = 0; c < UCHAR_MAX; c += 1){
         Transition *transition = malloc(sizeof(Transition));
         if(transition == NULL){
             dispose_queue(&q);
             dispose_list(&l);
+            dispose_trie(*t);
             exit(EXIT_FAILURE);
         }
 
@@ -88,6 +89,7 @@ void complete(Trie *t){
             if(transition == NULL){
                 dispose_queue(&q);
                 dispose_list(&l);
+                dispose_trie(*t);
                 exit(EXIT_FAILURE);
             }
 
