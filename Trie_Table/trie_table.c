@@ -73,10 +73,6 @@ int get_target(Trie trie, int start_node, unsigned char letter){
     return trie->transition[start_node][letter];
 }
 
-int is_finite_node(Trie trie, int node){
-    return trie->finite[node];
-}
-
 void print_trie(Trie t){
     for(int i = 0; i < t->maxNode; i += 1){
         printf("|");
@@ -102,10 +98,6 @@ void insertInTrie(Trie trie, unsigned char *w){
     }
     trie->finite[currentNode] = 1;
     trie->insertedNode = currentNode;
-}
-
-void declare_finite_state(Trie trie, int node){
-    trie->finite[node] = 1;
 }
 
 void create_transition(Trie trie, int start_node, char letter, int target_node){

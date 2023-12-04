@@ -75,6 +75,8 @@ void complete(Trie *t){
         transition->target_node = get_target(*t, 0, c);
         if(transition->start_node != transition->target_node && transition->target_node != -1){
             append(l, (const void *)transition);
+        } else {
+            free(transition);
         }
     }
     while (!is_empty(l)){
@@ -98,6 +100,8 @@ void complete(Trie *t){
             transition->target_node = get_target(*t, start_node, c);
             if(transition->target_node != -1){
                 append(l, (const void *)transition);
+            } else {
+                free(transition);
             }
         }
 

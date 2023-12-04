@@ -4,7 +4,8 @@
 #include "Trie_Hashtable/trie_hashtable.h"
 #include "Aho-Corasick/aho-corasick.h"
 
-#define BUF_SIZE 128
+#define MAX_WORD_LENGTH 60
+#define MAX_WORD_NB 100
 #define MAX_TEXT_LENGTH 5000000
 
 // dispose_words : free all space allocated for words
@@ -26,13 +27,13 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     size_t word_count = 0;
-    char word[BUF_SIZE];
-    char **words = calloc(BUF_SIZE * BUF_SIZE, sizeof(char));
+    char word[MAX_WORD_LENGTH];
+    char **words = calloc(MAX_WORD_LENGTH * MAX_WORD_NB, sizeof(char));
     if(words == NULL){
         exit(EXIT_FAILURE);
     }
-    for(size_t i = 0; i < BUF_SIZE; i += 1){
-        words[i] = calloc(BUF_SIZE, sizeof(char));
+    for(size_t i = 0; i < MAX_WORD_NB; i += 1){
+        words[i] = calloc(MAX_WORD_LENGTH, sizeof(char));
         if(words[i] == NULL){
             for(size_t j = 0; j < i; j += 1){
                 free(words[j]);
@@ -43,7 +44,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    while(fgets((char *) word, BUF_SIZE, f) != NULL) {
+    while(fgets((char *) word, MAX_WORD_LENGTH, f) != NULL) {
         strncpy(words[word_count], (char *)word, strlen(word) - 1);  
         ++word_count;
     }
@@ -66,7 +67,7 @@ int main(int argc, char **argv) {
     char text[MAX_TEXT_LENGTH];
     size_t textSize = 0;
 
-    while(fgets((char *) word, BUF_SIZE, f) != NULL) {
+    while(fgets((char *) word, MAX_WORD_LENGTH, f) != NULL) {
         strcpy(text + textSize, (char *)word);
         textSize = strlen(text);
     }

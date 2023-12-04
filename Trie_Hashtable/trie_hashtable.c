@@ -93,10 +93,6 @@ int get_target(Trie trie, int start_node, unsigned char letter){
     return list->targetNode;
 }
 
-int is_finite_node(Trie trie, int node){
-    return trie->finite[node];
-}
-
 void insertInTrie(Trie trie, unsigned char *w){
     if(w == NULL){
         fprintf(stderr, "Erreur w == NULL\n");
@@ -104,10 +100,7 @@ void insertInTrie(Trie trie, unsigned char *w){
     }
     int currentNode = 0;
     for(int i = 0; w[i] != '\0'; i += 1){
-        // printf("Noeud courrant : %d\n", currentNode);
         int hashPosition = hashFun(currentNode, w[i], trie);
-        // printf("Postion table hachage : %d\n", hashPosition);
-
         // LA FONCTION DE HACHAGE NOUS RENVOIE UNE POSITION OU AUCUNE
         // LISTE N'EST INITIALISEE
         if(trie->transition[hashPosition] == NULL){
@@ -148,17 +141,12 @@ void insertInTrie(Trie trie, unsigned char *w){
 
             // LA LISTE OBTENUE CONTIENT LE NOEUD SOUHAITE
             else {
-                // printf("J'ai trouve la lettre %c\n", list->letter);
                 currentNode = list->targetNode;
             }
         }
     }
     trie->insertedNode = currentNode;
     trie->finite[currentNode] = 1;
-}
-
-void declare_finite_state(Trie trie, int node){
-    trie->finite[node] = 1;
 }
 
 void create_transition(Trie trie, int start_node, char letter, int target_node){
