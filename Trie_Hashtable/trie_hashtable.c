@@ -179,6 +179,7 @@ void create_transition(Trie trie, int start_node, char letter, int target_node){
             nextListe->startNode = start_node;
             nextListe->letter = (unsigned char)letter;
             nextListe->targetNode = target_node;
+            nextListe->next = NULL;
         }
 }
 

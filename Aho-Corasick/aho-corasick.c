@@ -62,31 +62,8 @@ void complete(Trie *t){
     List *l = create_list();
                         
     for(unsigned char c = 0; c < UCHAR_MAX; c += 1){
-        Transition *transition = malloc(sizeof(Transition));
-        if(transition == NULL){
-            dispose_queue(&q);
-            dispose_list(&l);
-            dispose_trie(*t);
-            exit(EXIT_FAILURE);
-        }
-
-        transition->start_node = 0;
-        transition->letter = c;
-        transition->target_node = get_target(*t, 0, c);
-        if(transition->start_node != transition->target_node && transition->target_node != -1){
-            append(l, (const void *)transition);
-        } else {
-            free(transition);
-        }
-    }
-    while (!is_empty(l)){
-        Transition *transition = (Transition *)retrieve(l);
-        enque(q, (const void *)&transition->target_node);
-        sup[transition->target_node] = 0;
-    }
-    while (!queue_is_empty(q)){
-        int start_node = *(int *)dequeue(q);
-        for(unsigned char c = 0; c < UCHAR_MAX; c += 1){
+        int target = get_target(*t, 0, c);
+        if (target != 0 && target != -1) {
             Transition *transition = malloc(sizeof(Transition));
             if(transition == NULL){
                 dispose_queue(&q);
@@ -95,14 +72,35 @@ void complete(Trie *t){
                 exit(EXIT_FAILURE);
             }
 
-            transition->start_node = start_node;
+            transition->start_node = 0;
             transition->letter = c;
-            transition->target_node = get_target(*t, start_node, c);
-            if(transition->target_node != -1){
+            transition->target_node = get_target(*t, 0, c);
+            append(l, (const void *)transition);
+        } 
+    }
+    while (!is_empty(l)){
+        Transition *transition = (Transition *)retrieve(l);
+        enque(q, (const void *)&transition->target_node);
+        sup[transition->target_node] = 0;
+    }
+    while (!queue_is_empty(q)){
+        int start_node = *(int *) dequeue(q);
+        for(unsigned char c = 0; c < UCHAR_MAX; c += 1){
+            int target = get_target(*t, start_node, c);
+            if (target != - 1) {
+                Transition *transition = malloc(sizeof(Transition));
+                if(transition == NULL){
+                    dispose_queue(&q);
+                    dispose_list(&l);
+                    dispose_trie(*t);
+                    exit(EXIT_FAILURE);
+                }
+
+                transition->start_node = start_node;
+                transition->letter = c;
+                transition->target_node = get_target(*t, start_node, c);
                 append(l, (const void *)transition);
-            } else {
-                free(transition);
-            }
+            } 
         }
 
         while (!is_empty(l)){

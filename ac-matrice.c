@@ -3,7 +3,7 @@
 #include <string.h>
 #include "Aho-Corasick/aho-corasick.h"
 
-#define MAX_WORD_LENGTH 60
+#define MAX_WORD_LENGTH 100
 #define MAX_WORD_NB 100
 #define MAX_TEXT_LENGTH 5000000
 
